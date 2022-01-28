@@ -7,14 +7,10 @@ import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.World;
 
-public class DOFDimensions
-{
-   
-	
-	public static final RegistryKey<World> INFINITY_DIM = RegistryKey.of(Registry.DIMENSION, new Identifier(DOFMod.MOD_ID, "infinity_dimension"));
+public class DOFDimensions {
+	public static final RegistryKey<World> INFINITY_DIM = RegistryKey.of(Registry.WORLD_KEY, new Identifier(DOFMod.MOD_ID, "infinity_dimension"));
     
-	public static void init()
-	{
+	public static void init() {
 		Registry.register(Registry.CHUNK_GENERATOR, new Identifier(DOFMod.MOD_ID, "empty"), EmptyChunkGenerator.CODEC);
 	}
 	

@@ -1,34 +1,21 @@
 package me.benfah.doorsofinfinity;
 
-import com.qouteall.immersive_portals.render.PortalEntityRenderer;
-
-import me.benfah.doorsofinfinity.block.entity.renderer.InfinityDoorBlockEntityRenderer;
-import me.benfah.doorsofinfinity.init.DOFBlockEntities;
 import me.benfah.doorsofinfinity.init.DOFBlocks;
 import me.benfah.doorsofinfinity.init.DOFEntities;
-import me.benfah.doorsofinfinity.utils.MCUtils;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
-import net.fabricmc.fabric.api.client.rendereregistry.v1.BlockEntityRendererRegistry;
-import net.fabricmc.fabric.api.client.rendereregistry.v1.EntityRendererRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.minecraft.client.render.RenderLayer;
+import qouteall.imm_ptl.core.render.PortalEntityRenderer;
 
 
-public class DOFModClient implements ClientModInitializer
-{
-
+public class DOFModClient implements ClientModInitializer {
 	@Override
-	public void onInitializeClient()
-	{
+	public void onInitializeClient() {
 		BlockRenderLayerMap.INSTANCE.putBlock(DOFBlocks.GENERATED_INFINITY_DOOR, RenderLayer.getCutout());
 		BlockRenderLayerMap.INSTANCE.putBlock(DOFBlocks.INFINITY_DOOR, RenderLayer.getCutout());
+		EntityRendererRegistry.register(DOFEntities.BREAKABLE_PORTAL, PortalEntityRenderer::new);
 
-		BlockEntityRendererRegistry.INSTANCE.register(DOFBlockEntities.INFINITY_DOOR, InfinityDoorBlockEntityRenderer::new);
-
-		if(MCUtils.isIPPresent())
-		{
-			EntityRendererRegistry.INSTANCE.register(DOFEntities.BREAKABLE_PORTAL, (entityRenderDispatcher, context) -> new PortalEntityRenderer(entityRenderDispatcher));
-		}
+		//BlockEntityRendererRegistry.register(DOFBlockEntities.INFINITY_DOOR, InfinityDoorBlockEntityRenderer::new);
 	}
-
 }

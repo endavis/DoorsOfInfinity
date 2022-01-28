@@ -8,10 +8,8 @@ import me.benfah.doorsofinfinity.utils.MCUtils;
 import net.minecraft.block.enums.DoubleBlockHalf;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.*;
-import net.minecraft.client.render.block.entity.BlockEntityRenderDispatcher;
-import net.minecraft.client.render.block.entity.BlockEntityRenderer;
+import net.minecraft.client.render.block.entity.*;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.client.util.math.Vector3f;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Util;
 import net.minecraft.util.hit.BlockHitResult;
@@ -19,25 +17,23 @@ import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Matrix4f;
 import net.minecraft.util.math.Quaternion;
+import net.minecraft.util.math.Vec3f;
 
 import java.util.List;
 import java.util.Random;
 import java.util.stream.IntStream;
 
-public class InfinityDoorBlockEntityRenderer extends BlockEntityRenderer<InfinityDoorBlockEntity>
-{
+//todo: This.
+public class InfinityDoorBlockEntityRenderer /*implements BlockEntityRendererFactory<InfinityDoorBlockEntity> */ {/*
     private static Random RANDOM = Util.make(new Random(), r -> r.setSeed(31100));
 
     private static final List<RenderLayer> field_21732 = (List<RenderLayer>) IntStream.range(0, 16).mapToObj((i) -> {
-        return RenderLayer.getEndPortal(i + 1);
+        return RenderLayer.getEndPortal();
     }).collect(ImmutableList.toImmutableList());
 
     private MinecraftClient client = MinecraftClient.getInstance();
 
-    public InfinityDoorBlockEntityRenderer(BlockEntityRenderDispatcher dispatcher)
-    {
-        super(dispatcher);
-    }
+    public InfinityDoorBlockEntityRenderer(BlockEntityRenderDispatcher dispatcher) {}
 
     public static RenderLayer getOwnRenderLayer()
     {
@@ -57,10 +53,6 @@ public class InfinityDoorBlockEntityRenderer extends BlockEntityRenderer<Infinit
     {
         Direction direction = entity.getCachedState().get(InfinityDoorBlock.FACING);
 
-        if(!MCUtils.isIPPresent())
-        drawEndTexture(entity, tickDelta, matrices, vertexConsumers, direction);
-        
-        
         HitResult rayTrace = client.player.raycast(client.interactionManager.getReachDistance(), tickDelta, false);
 
         if(client.player.isSneaking() && entity.getCachedState().get(InfinityDoorBlock.HALF) == DoubleBlockHalf.LOWER)
@@ -74,7 +66,7 @@ public class InfinityDoorBlockEntityRenderer extends BlockEntityRenderer<Infinit
                     matrices.push();
                     transformToFace(matrices, direction);
                     matrices.translate(0.5, 1.9, -0.001);
-                    matrices.multiply(Vector3f.POSITIVE_Z.getDegreesQuaternion(180));
+                    matrices.multiply(Vec3f.POSITIVE_Z.getDegreesQuaternion(180));
                     matrices.scale(0.01F, 0.01F, 1);
                     drawCenteredTextWithRect(new TranslatableText("text.doorsofinfinity.installed_upgrades", entity.link.getUpgrades()).getString(), 0, 0xFFFFFF, false, matrices, vertexConsumers, false, 0xFFFFFF, light, 0.168F, 0.341F, 0.156F, 0.5F);
 
@@ -99,7 +91,7 @@ public class InfinityDoorBlockEntityRenderer extends BlockEntityRenderer<Infinit
     {
         stack.translate(.5, 0, .5);
         Quaternion rotationQuaternion = direction.getRotationQuaternion();
-        rotationQuaternion.hamiltonProduct(Vector3f.POSITIVE_X.getDegreesQuaternion(-90.0F));
+        rotationQuaternion.hamiltonProduct(Vec3f.POSITIVE_X.getDegreesQuaternion(-90.0F));
 
         stack.multiply(rotationQuaternion);
         stack.translate(-.5, 0, -.5);
@@ -144,10 +136,10 @@ public class InfinityDoorBlockEntityRenderer extends BlockEntityRenderer<Infinit
         RANDOM.setSeed(31100L);
         
         Matrix4f matrix4f = matrixStack.peek().getModel();
-        this.drawEndLayer(endPortalBlockEntity, 0.15F, matrix4f, vertexConsumerProvider.getBuffer((RenderLayer)field_21732.get(0)));
+        this.drawEndLayer(endPortalBlockEntity, 0.15F, matrix4f, vertexConsumerProvider.getBuffer(RenderLayer.getEndPortal()));
 
         for(int l = 1; l < 16; ++l) {
-            this.drawEndLayer(endPortalBlockEntity, 2.0F / (float)(18 - l), matrix4f, vertexConsumerProvider.getBuffer((RenderLayer)field_21732.get(l)));
+            this.drawEndLayer(endPortalBlockEntity, 2.0F / (float)(18 - l), matrix4f, vertexConsumerProvider.getBuffer((RenderLayer.getEndPortal()));
         }
         matrixStack.pop();
     }
@@ -194,4 +186,8 @@ public class InfinityDoorBlockEntityRenderer extends BlockEntityRenderer<Infinit
         }
     }
 
+    @Override
+    public BlockEntityRenderer create(Context ctx) {
+        return new InfinityDoorBlockEntityRenderer();
+    }*/
 }
