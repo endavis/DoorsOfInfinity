@@ -21,20 +21,9 @@ import java.lang.ref.WeakReference;
 import java.net.Proxy;
 
 @Mixin(MinecraftServer.class)
-public class MixinMinecraftServer
-{
-
+public class MixinMinecraftServer {
     @Inject(method = "<init>", at = @At(value = "RETURN"))
-    public void onInit(Thread thread, DynamicRegistryManager.Impl impl,
-    		LevelStorage.Session session, SaveProperties saveProperties,
-    		ResourcePackManager resourcePackManager, Proxy proxy,
-    		DataFixer dataFixer, ServerResourceManager serverResourceManager,
-    		MinecraftSessionService minecraftSessionService,
-    		GameProfileRepository gameProfileRepository, UserCache userCache,
-    		WorldGenerationProgressListenerFactory worldGenerationProgressListenerFactory, 
-    		CallbackInfo info)
-    {
+    public void doorsOfInfinity$onInit(Thread thread, DynamicRegistryManager.Impl impl, LevelStorage.Session session, SaveProperties saveProperties, ResourcePackManager resourcePackManager, Proxy proxy, DataFixer dataFixer, ServerResourceManager serverResourceManager, MinecraftSessionService minecraftSessionService, GameProfileRepository gameProfileRepository, UserCache userCache, WorldGenerationProgressListenerFactory worldGenerationProgressListenerFactory, CallbackInfo info) {
         MCUtils.mcServerReference = new WeakReference<>((MinecraftServer) ((Object) this));
     }
-
 }
