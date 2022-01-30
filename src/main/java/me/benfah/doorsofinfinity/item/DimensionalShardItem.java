@@ -11,27 +11,25 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 
-public class DimensionalShardItem extends Item
-{
+public class DimensionalShardItem extends Item {
     public DimensionalShardItem(Settings settings)
     {
         super(settings);
     }
 
     @Override
-    public ActionResult useOnBlock(ItemUsageContext context)
-    {
+    public ActionResult useOnBlock(ItemUsageContext context) {
         BlockState state = context.getWorld().getBlockState(context.getBlockPos());
-        if(!context.getWorld().isClient && state.getBlock() == DOFBlocks.INFINITY_DOOR && context.getPlayer().isSneaking() && context.getHand() == Hand.MAIN_HAND)
-        {
+        if(!context.getWorld().isClient && state.getBlock() == DOFBlocks.INFINITY_DOOR && context.getPlayer().isSneaking() && context.getHand() == Hand.MAIN_HAND) {
             BlockPos blockEntityPos = state.get(InfinityDoorBlock.HALF) == DoubleBlockHalf.LOWER ? context.getBlockPos() : context.getBlockPos().down();
             InfinityDoorBlockEntity blockEntity = (InfinityDoorBlockEntity) context.getWorld().getBlockEntity(blockEntityPos);
-            if(blockEntity.getOrCreateLinkedDimension().upgrade())
-            {
+            if(blockEntity.getOrCreateLinkedDimension().upgrade()) {
                 context.getPlayer().getMainHandStack().decrement(1);
+                context.getPlayer().getItemCooldownManager().set(this, 20);
                 return ActionResult.SUCCESS;
             }
         }
+
         return ActionResult.PASS;
     }
 
