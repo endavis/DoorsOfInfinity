@@ -22,10 +22,11 @@ import net.minecraft.world.WorldView;
 import java.util.function.Predicate;
 
 public class InfinityDoorBlock extends AbstractInfinityDoorBlock<InfinityDoorBlockEntity> {
-    public static final DirectionProperty FACING;
-    public static final BooleanProperty OPEN;
-    public static final EnumProperty<DoorHinge> HINGE;
-    public static final EnumProperty<DoubleBlockHalf> HALF;
+    public static final DirectionProperty FACING = HorizontalFacingBlock.FACING;
+    public static final BooleanProperty OPEN = Properties.OPEN;
+    public static final EnumProperty<DoorHinge> HINGE = Properties.DOOR_HINGE;
+    public static final EnumProperty<DoubleBlockHalf> HALF = Properties.DOUBLE_BLOCK_HALF;
+
 
     public InfinityDoorBlock(Settings settings) {
         super(settings);
@@ -70,13 +71,4 @@ public class InfinityDoorBlock extends AbstractInfinityDoorBlock<InfinityDoorBlo
     public InfinityDoorBlockEntity createBlockEntity(BlockPos pos, BlockState state) {
         return new InfinityDoorBlockEntity(pos, state);
     }
-
-    static {
-        FACING = HorizontalFacingBlock.FACING;
-        OPEN = Properties.OPEN;
-        HINGE = Properties.DOOR_HINGE;
-        HALF = Properties.DOUBLE_BLOCK_HALF;
-    }
-
-
 }

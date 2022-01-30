@@ -6,7 +6,7 @@ import me.benfah.doorsofinfinity.block.InfinityDoorBlock;
 import me.benfah.doorsofinfinity.utils.BoxUtils;
 import me.benfah.doorsofinfinity.utils.MCUtils;
 import me.benfah.doorsofinfinity.utils.PortalCreationHelper;
-import me.benfah.doorsofinfinity.utils.VecUtils;
+
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
@@ -70,8 +70,7 @@ public abstract class AbstractInfinityDoorBlockEntity<S extends AbstractInfinity
 		Quaternion rot = new Quaternion(Vec3f.POSITIVE_Y, direction.getOpposite().getHorizontal() * 90, true);
 
 		deleteSyncPortal();
-		localPortal = PortalCreationHelper.spawn(world, portalPos, 1, 2, rightDirection, syncDoorWorld.getRegistryKey(),
-				VecUtils.toVec3d(syncDoorPos), true, rot);
+		localPortal = PortalCreationHelper.spawn(world, portalPos, 1, 2, rightDirection, syncDoorWorld.getRegistryKey(), Vec3d.of(syncDoorPos), true, rot);
 
 		updateSyncDoor();
 	}

@@ -15,7 +15,5 @@ public class DOFModClient implements ClientModInitializer {
 		BlockRenderLayerMap.INSTANCE.putBlock(DOFBlocks.GENERATED_INFINITY_DOOR, RenderLayer.getCutout());
 		BlockRenderLayerMap.INSTANCE.putBlock(DOFBlocks.INFINITY_DOOR, RenderLayer.getCutout());
 		EntityRendererRegistry.register(DOFEntities.BREAKABLE_PORTAL, PortalEntityRenderer::new);
-
-		//BlockEntityRendererRegistry.register(DOFBlockEntities.INFINITY_DOOR, InfinityDoorBlockEntityRenderer::new);
 	}
 }

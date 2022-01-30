@@ -6,8 +6,11 @@
   "name": "Doors of Infinity",
   "description": "This mod adds small personal dimensions that can be accessed through a magic door!",
   "authors": [
-    "benfah",
-    "Siuolplex"
+    "Siuolplex - Maintainer",
+    "benfah - Original Author"
+  ],
+  "contributors": [
+    "Pythagoras_314 - Texture Artist"
   ],
 
   "license": "CC0-1.0",

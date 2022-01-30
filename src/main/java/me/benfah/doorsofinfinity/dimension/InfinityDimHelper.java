@@ -69,8 +69,6 @@ public class InfinityDimHelper {
 		return null;
 	}
 	
-	
-	
 	public static class PersonalDimension {
 		private static int INNER_SIZE = DOFConfig.getInstance().dimensionSize;
 		private static int WALL_THICKNESS = 2;
@@ -186,7 +184,5 @@ public class InfinityDimHelper {
 			tag.putInt("Upgrades", upgrades);
 			return tag;
 		}
-		
 	}
-	
 }

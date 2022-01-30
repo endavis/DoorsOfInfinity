@@ -4,7 +4,7 @@
   "package": "me.benfah.doorsofinfinity.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-  	"MixinMinecraftServer"
+    "MinecraftServerMixin"
   ],
   "injectors": {
     "defaultRequire": 1
