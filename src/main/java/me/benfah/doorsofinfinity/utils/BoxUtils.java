@@ -1,7 +1,7 @@
 package me.benfah.doorsofinfinity.utils;
 
 import net.minecraft.block.BlockState;
-import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.state.property.Property;
 import net.minecraft.util.Pair;
 import net.minecraft.util.math.*;
@@ -10,21 +10,26 @@ import java.util.Comparator;
 import java.util.IntSummaryStatistics;
 import java.util.Optional;
 
-import qouteall.q_misc_util.my_util.IntBox;
+import com.qouteall.immersive_portals.my_util.IntBox;
 
-public class BoxUtils {
-	public static Box getBoxInclusive(BlockPos pos1, BlockPos pos2) {
+public class BoxUtils
+{
+	
+	public static Box getBoxInclusive(BlockPos pos1, BlockPos pos2)
+	{
 		return new Box(new Vec3d(pos1.getX(), pos1.getY(), pos1.getZ()), new Vec3d(pos2.getX() + 1, pos2.getY() + 1, pos2.getZ() + 1));
 	}
 
-	public static Pair<BlockPos, BlockPos> getAnchors(IntBox box) {
+	public static Pair<BlockPos, BlockPos> getAnchors(IntBox box)
+	{
 		BlockPos lowAnchorPos = box.stream().min(Comparator.comparingInt(Vec3i::getX).thenComparingInt(Vec3i::getY).thenComparingInt(Vec3i::getZ)).get();
 		BlockPos highAnchorPos = box.stream().min(Comparator.comparingInt(Vec3i::getX).thenComparingInt(Vec3i::getY).thenComparingInt(Vec3i::getZ)).get();
 		return new Pair<>(lowAnchorPos, highAnchorPos);
 	}
 
-	public static NbtCompound vecToNbt(Vec3i vec3i) {
-		NbtCompound tag = new NbtCompound();
+	public static CompoundTag vecToTag(Vec3i vec3i)
+	{
+		CompoundTag tag = new CompoundTag();
 
 		tag.putInt("PosX" , vec3i.getX());
 		tag.putInt("PosY" , vec3i.getY());
@@ -33,7 +38,8 @@ public class BoxUtils {
 		return tag;
 	}
 
-	public static Vec3i vecFromTag(NbtCompound vec3i) {
+	public static Vec3i vecFromTag(CompoundTag vec3i)
+	{
 		int x = vec3i.getInt("PosX");
 		int y = vec3i.getInt("PosY");
 		int z = vec3i.getInt("PosZ");
@@ -41,7 +47,8 @@ public class BoxUtils {
 		return new Vec3i(x, y, z);
 	}
 
-	public static PlaneInfo getPlaneFromIntBox(IntBox box, Direction direction) {
+	public static PlaneInfo getPlaneFromIntBox(IntBox box, Direction direction)
+	{
 		Direction rightDirection = Direction.fromHorizontal(getAbsoluteHorizontal(direction.getHorizontal() - 1));
 
 		Vec3i axisH = Direction.UP.getVector();
@@ -63,21 +70,26 @@ public class BoxUtils {
 		return new PlaneInfo(axisW, axisH, width, height, new BlockPos(x, y, z));
 	}
 
-	public static <T extends Comparable<T>> boolean hasSamePropertyValue(Property<T> property, BlockState toCompare, T value) {
+	public static <T extends Comparable<T>> boolean hasSamePropertyValue(Property<T> property, BlockState toCompare, T value)
+	{
+
 		Optional<Property<?>> optional = toCompare.getProperties().stream().filter(compProp -> compProp.equals(property)).findAny();
 
-		if(optional.isPresent()) {
+		if(optional.isPresent())
+		{
 			return optional.get().equals(property) && toCompare.get(property).equals(value);
 		}
 		return false;
 	}
 
 
-	public static int getAbsoluteHorizontal(int horizontal) {
+	public static int getAbsoluteHorizontal(int horizontal)
+	{
 		return horizontal < 0 ? horizontal + 4 : horizontal;
 	}
 
-	public static class PlaneInfo {
+	public static class PlaneInfo
+	{
 		public Vec3i axisW;
 		public Vec3i axisH;
 
@@ -86,7 +98,8 @@ public class BoxUtils {
 
 		public BlockPos pos;
 
-		public PlaneInfo(Vec3i axisW, Vec3i axisH, int width, int height, BlockPos pos) {
+		public PlaneInfo(Vec3i axisW, Vec3i axisH, int width, int height, BlockPos pos)
+		{
 			this.axisW = axisW;
 			this.axisH = axisH;
 			this.width = width;
@@ -94,7 +107,8 @@ public class BoxUtils {
 			this.pos = pos;
 		}
 
-		public PlaneInfo(NbtCompound tag) {
+		public PlaneInfo(CompoundTag tag)
+		{
 			this.axisW = BoxUtils.vecFromTag(tag.getCompound("AxisW"));
 			this.axisH = BoxUtils.vecFromTag(tag.getCompound("AxisH"));
 
@@ -104,22 +118,28 @@ public class BoxUtils {
 			this.pos = new BlockPos(BoxUtils.vecFromTag(tag.getCompound("StartPos")));
 		}
 
-		public NbtCompound toCompound(NbtCompound tag) {
-			tag.put("AxisW", BoxUtils.vecToNbt(axisW));
-			tag.put("AxisH", BoxUtils.vecToNbt(axisH));
+		public CompoundTag toCompound(CompoundTag tag)
+		{
+			tag.put("AxisW", BoxUtils.vecToTag(axisW));
+			tag.put("AxisH", BoxUtils.vecToTag(axisH));
 			tag.putInt("Width", width);
 			tag.putInt("Height", height);
-			tag.put("StartPos", BoxUtils.vecToNbt(pos));
+
+			tag.put("StartPos", BoxUtils.vecToTag(pos));
 
 			return tag;
 		}
 
-		public boolean equals(Object obj) {
-			if(obj instanceof PlaneInfo) {
+		public boolean equals(Object obj)
+		{
+			if(obj instanceof PlaneInfo)
+			{
 				PlaneInfo toCompare = (PlaneInfo) obj;
 				return toCompare.height == this.height && toCompare.width == this.width;
 			}
 			return false;
 		}
+
 	}
+
 }

@@ -1,14 +1,17 @@
 package me.benfah.doorsofinfinity.item;
 
+import com.qouteall.immersive_portals.Helper;
+import com.qouteall.immersive_portals.my_util.IntBox;
 import me.benfah.doorsofinfinity.utils.BoxUtils;
 import me.benfah.doorsofinfinity.utils.MCUtils;
 import me.benfah.doorsofinfinity.utils.PortalCreationHelper;
 import net.minecraft.block.AbstractGlassBlock;
 import net.minecraft.client.item.TooltipContext;
+import net.minecraft.client.util.math.Vector3f;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
-import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.ActionResult;
@@ -16,67 +19,80 @@ import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.math.Vec3f;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.World;
-import qouteall.q_misc_util.Helper;
-import qouteall.q_misc_util.my_util.IntBox;
-
 import java.util.List;
 
-public class PhotonLinkItem extends Item {
+public class PhotonLinkItem extends Item
+{
     public PhotonLinkItem(Settings settings)
     {
         super(settings);
     }
 
     @Override
-    public ActionResult useOnBlock(ItemUsageContext context) {
-        if(!context.getWorld().isClient) {
-        	if(context.getStack().getSubNbt("PhotonLink") != null || context.getStack().getSubNbt("DoorLink") != null) {
-        		NbtCompound tag = context.getStack().getSubNbt("PhotonLink");
+    public ActionResult useOnBlock(ItemUsageContext context)
+    {
+        if(!context.getWorld().isClient)
+        {
+        	if(context.getStack().getSubTag("PhotonLink") != null && MCUtils.isIPPresent() && context.getStack().getSubTag("DoorLink") != null)
+        	{
+        		CompoundTag tag = context.getStack().getSubTag("PhotonLink");
+
                 Direction savedFacing = Direction.fromHorizontal(tag.getInt("Direction")).getOpposite();
                 Direction currentFacing = context.getSide();
-                BoxUtils.PlaneInfo savedPlane = new BoxUtils.PlaneInfo(tag);
 
+                BoxUtils.PlaneInfo savedPlane = new BoxUtils.PlaneInfo(tag);
                 IntBox savedIntBox = new IntBox(savedPlane.pos, savedPlane.pos.add((savedPlane.width - 1) * savedPlane.axisW.getX(), savedPlane.height - 1, (savedPlane.width - 1) * savedPlane.axisW.getZ()));
+
+
+
+
+
+
                 IntBox currentIntBox = Helper.expandRectangle(context.getBlockPos(), (pos) -> context.getWorld().getBlockState(pos).getBlock() instanceof AbstractGlassBlock, context.getSide().getAxis());
 
                 BoxUtils.PlaneInfo currentPlane = BoxUtils.getPlaneFromIntBox(currentIntBox, context.getSide());
 
                 Vec3d entityVec = currentIntBox.getCenterVec().add(0.495 * currentFacing.getOffsetX(), 0, 0.495 * currentFacing.getOffsetZ());
                 Vec3d vecToRender = savedIntBox.getCenterVec().subtract(savedFacing.getOffsetX() != 0 ? 0.5 * savedFacing.getOffsetX() : 0, 0, savedFacing.getOffsetZ() != 0 ? 0.5 * savedFacing.getOffsetZ() : 0);
+
                 int difference = BoxUtils.getAbsoluteHorizontal(currentFacing.getHorizontal() - savedFacing.getHorizontal());
-                RegistryKey<World> worldKey = RegistryKey.of(Registry.WORLD_KEY, new Identifier(tag.getString("WorldName")));
 
-                if(savedPlane.equals(currentPlane)) {
-                    PortalCreationHelper.spawnBreakable(context.getWorld(), entityVec, currentPlane.width, currentPlane.height, currentPlane.axisW, currentPlane.axisH, worldKey, vecToRender, false, Vec3f.POSITIVE_Y.getDegreesQuaternion(difference * 90), false, savedIntBox, currentIntBox, context.getWorld().getServer().getWorld(worldKey));
-                    context.getStack().removeSubNbt("PhotonLink");
-                    System.out.println("savedPlane if statement success, should of spawned.");
+                RegistryKey<World> worldKey = RegistryKey.of(Registry.DIMENSION, new Identifier(tag.getString("WorldName")));
+                		
+                if(savedPlane.equals(currentPlane))
+                {
+                    PortalCreationHelper.spawnBreakable(context.getWorld(), entityVec, currentPlane.width,
+                            currentPlane.height, currentPlane.axisW, currentPlane.axisH,
+                            worldKey, vecToRender, false,
+                            Vector3f.POSITIVE_Y.getDegreesQuaternion(difference * 90), false, savedIntBox, currentIntBox, context.getWorld().getServer().getWorld(worldKey));
+
+                    context.getStack().removeSubTag("PhotonLink");
+
                     return ActionResult.SUCCESS;
-                } else {
-                    System.out.println("savedPlane if statement fail.");
                 }
+        	}
+            
 
-                System.out.println("PhotonLinking success, should of attempted to spawn.");
-
-            } else if (context.getStack().getSubNbt("DoorLink") != null) {
-                System.out.println("DoorLink NBT Success");
-            } else if (context.getStack().getSubNbt("PhotonLink") != null) {
-                System.out.println("PhotonLink NBT Success");
-            } else System.out.println("PhotonLinking fail, should not of spawned.");
         }
-
         return ActionResult.CONSUME;
     }
 
     @Override
-    public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
-        NbtCompound photonTag = stack.getSubNbt("PhotonLink");
-        if(photonTag != null) {
+    public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context)
+    {
+        CompoundTag photonTag = stack.getSubTag("PhotonLink");
+
+        if(!MCUtils.isIPPresent())
+        tooltip.add(new TranslatableText("lore.doorsofinfinity.ip_not_present").formatted(Formatting.GRAY));
+
+        if(photonTag != null)
+        {
             tooltip.add(new TranslatableText("lore.doorsofinfinity.photo_link_size", photonTag.getInt("Width"), photonTag.getInt("Height")).formatted(Formatting.GRAY));
         }
+        
         
         super.appendTooltip(stack, world, tooltip, context);
     }
