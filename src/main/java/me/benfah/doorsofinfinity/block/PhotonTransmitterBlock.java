@@ -1,9 +1,12 @@
 package me.benfah.doorsofinfinity.block;
 
+import me.benfah.doorsofinfinity.init.DOFBlocks;
 import me.benfah.doorsofinfinity.init.DOFItems;
 import me.benfah.doorsofinfinity.utils.BoxUtils;
-import me.benfah.doorsofinfinity.utils.MCUtils;
-import net.minecraft.block.*;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.GlassBlock;
+import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.nbt.NbtCompound;
@@ -37,17 +40,14 @@ public class PhotonTransmitterBlock extends GlassBlock {
             if(player.getMainHandStack().getItem() == DOFItems.PHOTON_LINK) {
                 Direction direction = state.get(PhotonTransmitterBlock.FACING);
 
-                IntBox box = Helper.expandRectangle(pos,
-                        testPos -> BoxUtils.hasSamePropertyValue(PhotonTransmitterBlock.FACING, world.getBlockState(testPos), state.get(PhotonTransmitterBlock.FACING)),
-                        direction.getAxis());
+                IntBox box = Helper.expandRectangle(pos, testPos -> BoxUtils.hasSamePropertyValue(PhotonTransmitterBlock.FACING, world.getBlockState(testPos), state.get(PhotonTransmitterBlock.FACING), DOFBlocks.PHOTON_TRANSMITTER), direction.getAxis());
 
                 NbtCompound tag = player.getMainHandStack().getOrCreateSubNbt("PhotonLink");
                 BoxUtils.PlaneInfo planeInfo = BoxUtils.getPlaneFromIntBox(box, direction);
-                planeInfo.toCompound(tag);
+                planeInfo.toNbt(tag);
                 tag.putInt("Direction", direction.getHorizontal());
                 tag.putString("WorldName", world.getRegistryKey().getValue().toString());
 
-                //Todo: Make this into some sort of block state thing.
                 player.sendMessage(new TranslatableText("lore.doorsofinfinity.linked"), false);
 
                 return ActionResult.SUCCESS;

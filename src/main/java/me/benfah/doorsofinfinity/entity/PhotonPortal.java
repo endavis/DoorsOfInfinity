@@ -28,8 +28,8 @@ public class PhotonPortal extends Portal {
     protected void readCustomDataFromNbt(NbtCompound compoundTag) {
         super.readCustomDataFromNbt(compoundTag);
         if(!world.isClient) {
-	        transmitterArea = new IntBox(new BlockPos(BoxUtils.vecFromTag(compoundTag.getCompound("PhotonTransmitterL"))), new BlockPos(BoxUtils.vecFromTag(compoundTag.getCompound("PhotonTransmitterH"))));
-	        glassArea = new IntBox(new BlockPos(BoxUtils.vecFromTag(compoundTag.getCompound("GlassAreaL"))), new BlockPos(BoxUtils.vecFromTag(compoundTag.getCompound("GlassAreaH"))));
+	        transmitterArea = new IntBox(new BlockPos(BoxUtils.vecFromNbt(compoundTag.getCompound("PhotonTransmitterL"))), new BlockPos(BoxUtils.vecFromNbt(compoundTag.getCompound("PhotonTransmitterH"))));
+	        glassArea = new IntBox(new BlockPos(BoxUtils.vecFromNbt(compoundTag.getCompound("GlassAreaL"))), new BlockPos(BoxUtils.vecFromNbt(compoundTag.getCompound("GlassAreaH"))));
 
 	        if(compoundTag.contains("WorldName")) {
 	        	transmitterWorld = world.getServer().getWorld(RegistryKey.of(Registry.WORLD_KEY, new Identifier(compoundTag.getString("WorldName"))));

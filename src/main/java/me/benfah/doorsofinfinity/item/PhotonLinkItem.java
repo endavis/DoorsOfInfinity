@@ -53,19 +53,9 @@ public class PhotonLinkItem extends Item {
                 if(savedPlane.equals(currentPlane)) {
                     PortalCreationHelper.spawnBreakable(context.getWorld(), entityVec, currentPlane.width, currentPlane.height, currentPlane.axisW, currentPlane.axisH, worldKey, vecToRender, false, Vec3f.POSITIVE_Y.getDegreesQuaternion(difference * 90), false, savedIntBox, currentIntBox, context.getWorld().getServer().getWorld(worldKey));
                     context.getStack().removeSubNbt("PhotonLink");
-                    System.out.println("savedPlane if statement success, should of spawned.");
                     return ActionResult.SUCCESS;
-                } else {
-                    System.out.println("savedPlane if statement fail.");
                 }
-
-                System.out.println("PhotonLinking success, should of attempted to spawn.");
-
-            } else if (context.getStack().getSubNbt("DoorLink") != null) {
-                System.out.println("DoorLink NBT Success");
-            } else if (context.getStack().getSubNbt("PhotonLink") != null) {
-                System.out.println("PhotonLink NBT Success");
-            } else System.out.println("PhotonLinking fail, should not of spawned.");
+            }
         }
 
         return ActionResult.CONSUME;

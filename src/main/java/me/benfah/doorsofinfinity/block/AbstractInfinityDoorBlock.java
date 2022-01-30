@@ -35,14 +35,14 @@ import net.minecraft.world.WorldAccess;
 import net.minecraft.world.WorldView;
 
 public abstract class AbstractInfinityDoorBlock<T extends AbstractInfinityDoorBlockEntity> extends BlockWithEntity {
-    public static final DirectionProperty FACING;
-    public static final BooleanProperty OPEN;
-    public static final EnumProperty<DoorHinge> HINGE;
-    public static final EnumProperty<DoubleBlockHalf> HALF;
-    protected static final VoxelShape NORTH_SHAPE;
-    protected static final VoxelShape SOUTH_SHAPE;
-    protected static final VoxelShape EAST_SHAPE;
-    protected static final VoxelShape WEST_SHAPE;
+    public static final DirectionProperty FACING = HorizontalFacingBlock.FACING;
+    public static final BooleanProperty OPEN = Properties.OPEN;
+    public static final EnumProperty<DoorHinge> HINGE = Properties.DOOR_HINGE;
+    public static final EnumProperty<DoubleBlockHalf> HALF = Properties.DOUBLE_BLOCK_HALF;
+    protected static final VoxelShape NORTH_SHAPE = Block.createCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 3.0D);
+    protected static final VoxelShape SOUTH_SHAPE = Block.createCuboidShape(0.0D, 0.0D, 13.0D, 16.0D, 16.0D, 16.0D);
+    protected static final VoxelShape EAST_SHAPE = Block.createCuboidShape(13.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D);
+    protected static final VoxelShape WEST_SHAPE = Block.createCuboidShape(0.0D, 0.0D, 0.0D, 3.0D, 16.0D, 16.0D);
 
     public AbstractInfinityDoorBlock(Block.Settings settings) {
         super(settings);
@@ -172,7 +172,6 @@ public abstract class AbstractInfinityDoorBlock<T extends AbstractInfinityDoorBl
             blockEntity.updateSyncDoor();
         }
         return ActionResult.SUCCESS;
-
     }
 
     public void neighborUpdate(BlockState state, World world, BlockPos pos, Block block, BlockPos neighborPos, boolean moved) {
@@ -214,17 +213,6 @@ public abstract class AbstractInfinityDoorBlock<T extends AbstractInfinityDoorBl
     }
 
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) { builder.add(HALF, FACING, OPEN, HINGE); }
-
-    static {
-        FACING = HorizontalFacingBlock.FACING;
-        OPEN = Properties.OPEN;
-        HINGE = Properties.DOOR_HINGE;
-        HALF = Properties.DOUBLE_BLOCK_HALF;
-        NORTH_SHAPE = Block.createCuboidShape(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 3.0D);
-        SOUTH_SHAPE = Block.createCuboidShape(0.0D, 0.0D, 13.0D, 16.0D, 16.0D, 16.0D);
-        EAST_SHAPE = Block.createCuboidShape(13.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D);
-        WEST_SHAPE = Block.createCuboidShape(0.0D, 0.0D, 0.0D, 3.0D, 16.0D, 16.0D);
-    }
 
     @Override
     public abstract T createBlockEntity(BlockPos pos, BlockState state);

@@ -1,5 +1,6 @@
 package me.benfah.doorsofinfinity.utils;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.state.property.Property;
@@ -25,7 +26,7 @@ public class BoxUtils {
 
 	public static NbtCompound vecToNbt(Vec3i vec3i) {
 		NbtCompound tag = new NbtCompound();
-
+		
 		tag.putInt("PosX" , vec3i.getX());
 		tag.putInt("PosY" , vec3i.getY());
 		tag.putInt("PosZ" , vec3i.getZ());
@@ -33,7 +34,7 @@ public class BoxUtils {
 		return tag;
 	}
 
-	public static Vec3i vecFromTag(NbtCompound vec3i) {
+	public static Vec3i vecFromNbt(NbtCompound vec3i) {
 		int x = vec3i.getInt("PosX");
 		int y = vec3i.getInt("PosY");
 		int z = vec3i.getInt("PosZ");
@@ -63,10 +64,10 @@ public class BoxUtils {
 		return new PlaneInfo(axisW, axisH, width, height, new BlockPos(x, y, z));
 	}
 
-	public static <T extends Comparable<T>> boolean hasSamePropertyValue(Property<T> property, BlockState toCompare, T value) {
+	public static <T extends Comparable<T>> boolean hasSamePropertyValue(Property<T> property, BlockState toCompare, T value, Block isBlock) {
 		Optional<Property<?>> optional = toCompare.getProperties().stream().filter(compProp -> compProp.equals(property)).findAny();
 
-		if(optional.isPresent()) {
+		if(optional.isPresent() && toCompare.isOf(isBlock)) {
 			return optional.get().equals(property) && toCompare.get(property).equals(value);
 		}
 		return false;
@@ -95,16 +96,16 @@ public class BoxUtils {
 		}
 
 		public PlaneInfo(NbtCompound tag) {
-			this.axisW = BoxUtils.vecFromTag(tag.getCompound("AxisW"));
-			this.axisH = BoxUtils.vecFromTag(tag.getCompound("AxisH"));
+			this.axisW = BoxUtils.vecFromNbt(tag.getCompound("AxisW"));
+			this.axisH = BoxUtils.vecFromNbt(tag.getCompound("AxisH"));
 
 			this.width = tag.getInt("Width");
 			this.height = tag.getInt("Height");
 
-			this.pos = new BlockPos(BoxUtils.vecFromTag(tag.getCompound("StartPos")));
+			this.pos = new BlockPos(BoxUtils.vecFromNbt(tag.getCompound("StartPos")));
 		}
 
-		public NbtCompound toCompound(NbtCompound tag) {
+		public NbtCompound toNbt(NbtCompound tag) {
 			tag.put("AxisW", BoxUtils.vecToNbt(axisW));
 			tag.put("AxisH", BoxUtils.vecToNbt(axisH));
 			tag.putInt("Width", width);

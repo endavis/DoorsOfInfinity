@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "doorsofinfinity:simulated_block_of_infinity",
+      "doorsofinfinity:simulated_infinity_door",
+      "doorsofinfinity:clear_infinity_dim",
+      "doorsofinfinity:dimensional_shard",
+      "doorsofinfinity:photon_link",
+      "doorsofinfinity:photon_transmitter"
+    ]
+  },
+  "criteria": {
+    "has_item": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:diamond"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_item"
+    ]
+  ]
+}

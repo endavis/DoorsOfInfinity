@@ -1,5 +1,5 @@
 {
-  "parent": "block/cube",
+  "parent": "block/cube_bottom_top",
   "display": {
     "firstperson_righthand": {
       "rotation": [ 0, 135, 0 ],
@@ -9,11 +9,8 @@
   },
   "textures": {
     "particle": "doorsofinfinity:block/wip_north",
-    "down": "doorsofinfinity:block/wip_south",
-    "up": "doorsofinfinity:block/wip_north",
-    "north": "doorsofinfinity:block/wip_front",
-    "east": "doorsofinfinity:block/wip_east",
-    "south": "doorsofinfinity:block/wip_behind",
-    "west": "doorsofinfinity:block/wip_west"
+    "side": "doorsofinfinity:block/wip_north",
+    "bottom": "doorsofinfinity:block/wip_behind",
+    "top": "doorsofinfinity:block/wip_front"
   }
 }
