@@ -1,22 +1,26 @@
 package me.benfah.doorsofinfinity.block.entity;
 
-import net.minecraft.entity.Entity;
-import qouteall.imm_ptl.core.portal.Portal;
 import me.benfah.doorsofinfinity.block.InfinityDoorBlock;
 import me.benfah.doorsofinfinity.utils.BoxUtils;
 import me.benfah.doorsofinfinity.utils.MCUtils;
 import me.benfah.doorsofinfinity.utils.PortalCreationHelper;
-
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.block.enums.DoorHinge;
 import net.minecraft.block.enums.DoubleBlockHalf;
+import net.minecraft.entity.Entity.RemovalReason;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.*;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Quaternion;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.Vec3f;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.World;
+import qouteall.imm_ptl.core.portal.Portal;
 
 public abstract class AbstractInfinityDoorBlockEntity<S extends AbstractInfinityDoorBlockEntity<S>> extends BlockEntity {
 	public BlockPos syncDoorPos;
@@ -28,7 +32,7 @@ public abstract class AbstractInfinityDoorBlockEntity<S extends AbstractInfinity
 	}
 
 	private boolean isUpper() {
-		return getCachedState().get(InfinityDoorBlock.HALF) == DoubleBlockHalf.UPPER;
+		return this.getCachedState().get(InfinityDoorBlock.HALF) == DoubleBlockHalf.UPPER;
 	}
 
 	public void syncWith(S entity) {
@@ -36,75 +40,79 @@ public abstract class AbstractInfinityDoorBlockEntity<S extends AbstractInfinity
 		entity.syncDoorWorld = this.world;
 		this.syncDoorPos = entity.pos;
 		this.syncDoorWorld = entity.world;
-		if(localPortal != null && localPortal.isAlive()) {
-			createSyncedPortals();
+		if (this.localPortal != null && this.localPortal.isAlive()) {
+			this.createSyncedPortals();
 		}
 	}
 
 	public void updateSyncDoor() {
-		if (isSyncPresent()) {
-			syncDoorWorld.setBlockState(syncDoorPos, getSyncEntity().getWorld().getBlockState(getSyncEntity().getPos()).with(InfinityDoorBlock.HINGE, getCachedState().get(InfinityDoorBlock.HINGE)).with(InfinityDoorBlock.OPEN, getCachedState().get(InfinityDoorBlock.OPEN)), 10);
+		if (this.isSyncPresent()) {
+			this.syncDoorWorld.setBlockState(
+							this.syncDoorPos,
+							this.getSyncEntity().getWorld().getBlockState(
+									this.getSyncEntity().getPos()).with(InfinityDoorBlock.HINGE,
+									this.getCachedState().get(InfinityDoorBlock.HINGE)).with(InfinityDoorBlock.OPEN,
+									this.getCachedState().get(InfinityDoorBlock.OPEN)),
+							10
+					);
 		}
+
 	}
 
 	public boolean isSyncPresent() {
-		return syncDoorPos != null && syncDoorWorld != null && !syncDoorWorld.getBlockState(syncDoorPos).isAir();
+		return this.syncDoorPos != null && this.syncDoorWorld != null && !this.syncDoorWorld.getBlockState(this.syncDoorPos).isAir();
 	}
-	
+
 	public void deleteLocalPortal() {
-		deletePortals(world, pos);
+		this.deletePortals(this.world, this.pos);
 	}
-	
+
 	public void deleteSyncPortal() {
-		deletePortals(syncDoorWorld, syncDoorPos);
+		this.deletePortals(this.syncDoorWorld, this.syncDoorPos);
 	}
-	
+
 	private void deletePortals(World world, BlockPos pos) {
-		world.getEntitiesByClass(Portal.class, BoxUtils.getBoxInclusive(pos, pos.up()), portal -> true).forEach(portal -> portal.remove(Entity.RemovalReason.DISCARDED));
+		world.getEntitiesByClass(Portal.class, BoxUtils.getBoxInclusive(pos, pos.up()), portal -> true)
+				.forEach(portal -> portal.setRemoved(RemovalReason.DISCARDED));
 	}
 
 	private void createSyncedPortals() {
-		Direction direction = getCachedState().get(InfinityDoorBlock.FACING);
+		Direction direction = this.getCachedState().get(InfinityDoorBlock.FACING);
 		Direction rightDirection = Direction.fromHorizontal(direction.getHorizontal() + 1);
-		Vec3d portalPos = new Vec3d(pos.getX(), pos.getY(), pos.getZ()).add(0.5, 1, 0.5);
-		Quaternion rot = new Quaternion(Vec3f.POSITIVE_Y, direction.getOpposite().getHorizontal() * 90, true);
-
-		deleteSyncPortal();
-		localPortal = PortalCreationHelper.spawn(world, portalPos, 1, 2, rightDirection, syncDoorWorld.getRegistryKey(), Vec3d.of(syncDoorPos), true, rot);
-
-		updateSyncDoor();
+		Vec3d portalPos = new Vec3d(this.pos.getX(), this.pos.getY(), this.pos.getZ()).add(0.5, 1.0, 0.5);
+		Quaternion rot = new Quaternion(Vec3f.POSITIVE_Y, (float)(direction.getOpposite().getHorizontal() * 90), true);
+		this.deleteSyncPortal();
+		this.localPortal = PortalCreationHelper.spawn(
+				this.world, portalPos, 1.0, 2.0, rightDirection, this.syncDoorWorld.getRegistryKey(), Vec3d.of(this.syncDoorPos), true, rot
+		);
+		this.updateSyncDoor();
 	}
 
-
 	public void syncWithDoor() {
-		syncWith(getSyncEntity());
+		this.syncWith(this.getSyncEntity());
 	}
 
 	public S getSyncEntity() {
-		if (syncDoorWorld == null) return null;
-
-		return (S) syncDoorWorld.getBlockEntity(syncDoorPos);
+		return (S)(this.syncDoorWorld == null ? null : this.syncDoorWorld.getBlockEntity(this.syncDoorPos));
 	}
 
-	@Override
 	public void readNbt(NbtCompound tag) {
 		if (tag.contains("SyncDoorDimName")) {
-			syncDoorWorld = MCUtils.getServer().getWorld(RegistryKey.of(Registry.WORLD_KEY, new Identifier(tag.getString("SyncDoorDimName"))));
-			syncDoorPos = new BlockPos(tag.getInt("SyncDoorX"), tag.getInt("SyncDoorY"), tag.getInt("SyncDoorZ"));
+			this.syncDoorWorld = MCUtils.getServer().getWorld(RegistryKey.of(Registry.WORLD_KEY, new Identifier(tag.getString("SyncDoorDimName"))));
+			this.syncDoorPos = new BlockPos(tag.getInt("SyncDoorX"), tag.getInt("SyncDoorY"), tag.getInt("SyncDoorZ"));
 		}
 
 		super.readNbt(tag);
 	}
 
-	@Override
 	public void writeNbt(NbtCompound tag) {
-		if (syncDoorWorld != null) {
-			tag.putString("SyncDoorDimName", syncDoorWorld.getRegistryKey().getValue().toString());
-			tag.putInt("SyncDoorX", syncDoorPos.getX());
-			tag.putInt("SyncDoorY", syncDoorPos.getY());
-			tag.putInt("SyncDoorZ", syncDoorPos.getZ());
+		if (this.syncDoorWorld != null) {
+			tag.putString("SyncDoorDimName", this.syncDoorWorld.getRegistryKey().getValue().toString());
+			tag.putInt("SyncDoorX", this.syncDoorPos.getX());
+			tag.putInt("SyncDoorY", this.syncDoorPos.getY());
+			tag.putInt("SyncDoorZ", this.syncDoorPos.getZ());
 		}
+
 		super.writeNbt(tag);
 	}
-	
 }

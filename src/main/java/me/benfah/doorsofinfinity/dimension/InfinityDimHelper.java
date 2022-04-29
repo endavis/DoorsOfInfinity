@@ -70,11 +70,10 @@ public class InfinityDimHelper {
 	}
 	
 	public static class PersonalDimension {
-		private static int INNER_SIZE = DOFConfig.getInstance().dimensionSize;
+		private static int INNER_SIZE = DOFConfig.dimensionSize;
 		private static int WALL_THICKNESS = 2;
-		private static int UPGRADE_MULTIPLIER = 8;
 
-		private int dimId;
+		private int dimId; // Dim ID may not always be the same
 		private ServerWorld world;
 		private int upgrades = 0;
 
@@ -103,6 +102,7 @@ public class InfinityDimHelper {
 		}
 
 		public int getInnerSize() {
+			int UPGRADE_MULTIPLIER = 8;
 			return INNER_SIZE + getUpgrades() * UPGRADE_MULTIPLIER;
 		}
 
@@ -111,9 +111,7 @@ public class InfinityDimHelper {
 		}
 
 		public boolean upgrade() {
-			if(getUpgrades() >= DOFConfig.getInstance().maxUpgrades) {
-				return false;
-			}
+			if (getUpgrades() >= DOFConfig.maxUpgrades) return false;
 
 			int prevInnerSize = getInnerSize();
 			InfinityDoorBlockEntity linkedBlockEntity = getBlockEntity().getSyncEntity();

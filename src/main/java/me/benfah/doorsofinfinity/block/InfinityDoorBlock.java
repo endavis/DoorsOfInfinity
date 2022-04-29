@@ -44,7 +44,7 @@ public class InfinityDoorBlock extends AbstractInfinityDoorBlock<InfinityDoorBlo
     }
 
     public boolean canPlaceAt(BlockState state, WorldView world, BlockPos pos) {
-        if(!DOFConfig.getInstance().requireDoorBorder) {
+        if(!DOFConfig.requireDoorBorder) {
             return super.canPlaceAt(state, world, pos);
         }
         
@@ -56,7 +56,7 @@ public class InfinityDoorBlock extends AbstractInfinityDoorBlock<InfinityDoorBlo
     }
 
     private boolean topAndBottomMatch(BlockPos pos, WorldView world) {
-        Predicate<Block> matchingBlocks = (block) -> block == DOFBlocks.INFINITY_BLOCK || block == DOFBlocks.GENERATED_INFINITY_BLOCK;
+        Predicate<Block> matchingBlocks = (block) -> (block == DOFBlocks.INFINITY_BLOCK) || (block == DOFBlocks.GENERATED_INFINITY_BLOCK);
         return matchingBlocks.test(world.getBlockState(pos.down()).getBlock()) && matchingBlocks.test(world.getBlockState(pos.up(2)).getBlock());
     }
 

@@ -1,10 +1,9 @@
 package me.benfah.doorsofinfinity;
 
+import eu.midnightdust.lib.config.MidnightConfig;
 import me.benfah.doorsofinfinity.config.DOFConfig;
 import me.benfah.doorsofinfinity.init.*;
 import me.benfah.doorsofinfinity.utils.MCUtils;
-import me.shedaniel.autoconfig.AutoConfig;
-import me.shedaniel.autoconfig.serializer.JanksonConfigSerializer;
 import net.fabricmc.api.ModInitializer;
 
 
@@ -19,6 +18,6 @@ public class DOFMod implements ModInitializer {
 		DOFBlockEntities.init();
 		DOFDimensions.init();
 		DOFEntities.init();
-		AutoConfig.register(DOFConfig.class, JanksonConfigSerializer::new);
+		MidnightConfig.init(MOD_ID, DOFConfig.class);
 	}
 }

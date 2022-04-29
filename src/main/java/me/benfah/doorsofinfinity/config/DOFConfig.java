@@ -1,17 +1,9 @@
 package me.benfah.doorsofinfinity.config;
 
-import me.benfah.doorsofinfinity.DOFMod;
-import me.shedaniel.autoconfig.AutoConfig;
-import me.shedaniel.autoconfig.ConfigData;
-import me.shedaniel.autoconfig.annotation.Config;
+import eu.midnightdust.lib.config.MidnightConfig;
 
-@Config(name = DOFMod.MOD_ID)
-public class DOFConfig implements ConfigData {
-    public boolean requireDoorBorder = true;
-    public int dimensionSize = 11;
-    public int maxUpgrades = 8;
-
-    public static DOFConfig getInstance() {
-        return AutoConfig.getConfigHolder(DOFConfig.class).getConfig();
-    }
+public class DOFConfig extends MidnightConfig {
+    @Entry public static boolean requireDoorBorder = true;
+    @Entry public static int dimensionSize = 11;
+    @Entry public static int maxUpgrades = 8;
 }

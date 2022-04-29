@@ -1,6 +1,6 @@
 package me.benfah.doorsofinfinity.chunkgen;
 
-import java.util.HashMap;
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
@@ -8,8 +8,9 @@ import java.util.concurrent.Executor;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
-import me.benfah.doorsofinfinity.config.DOFConfig;
 import net.minecraft.block.BlockState;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.registry.BuiltinRegistries;
 import net.minecraft.world.*;
 import net.minecraft.world.Heightmap.Type;
 import net.minecraft.world.biome.source.BiomeAccess;
@@ -20,7 +21,6 @@ import net.minecraft.world.gen.GenerationStep;
 import net.minecraft.world.gen.StructureAccessor;
 import net.minecraft.world.gen.chunk.Blender;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
-import net.minecraft.world.gen.chunk.StructuresConfig;
 import net.minecraft.world.gen.chunk.VerticalBlockSample;
 
 public class EmptyChunkGenerator extends ChunkGenerator {
@@ -30,7 +30,7 @@ public class EmptyChunkGenerator extends ChunkGenerator {
 
 
 	public EmptyChunkGenerator(BiomeSource biomeSource) {
-		super(biomeSource, new StructuresConfig(Optional.empty(), new HashMap<>()));
+		super(BuiltinRegistries.STRUCTURE_SETS, Optional.empty(), biomeSource);
 	}
 
 	@Override
@@ -87,4 +87,6 @@ public class EmptyChunkGenerator extends ChunkGenerator {
 		return new VerticalBlockSample(world.getBottomY(), new BlockState[0]);
 	}
 
+	@Override
+	public void method_40450(List<String> list, BlockPos blockPos) {}
 }

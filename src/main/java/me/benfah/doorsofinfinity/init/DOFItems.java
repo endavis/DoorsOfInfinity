@@ -14,8 +14,6 @@ import net.minecraft.util.registry.Registry;
 import static me.benfah.doorsofinfinity.init.DOFItemGroups.DOF_GROUP;
 
 public class DOFItems {
-	public static final String ANCIENT_MADE = Util.createTranslationKey("lore", new Identifier(DOFMod.MOD_ID, "ancient_made"));
-
 	public static Item INFINITY_DOOR = register("infinity_door", new InfinityDoorItem(DOFBlocks.GENERATED_INFINITY_DOOR, new Settings().maxCount(1)));
 	public static Item SIMULATED_INFINITY_DOOR = register("simulated_infinity_door", new InfinityDoorItem(DOFBlocks.INFINITY_DOOR, new Settings().group(DOF_GROUP).maxCount(1)));
 

@@ -78,7 +78,7 @@ public abstract class AbstractInfinityDoorBlock<T extends AbstractInfinityDoorBl
 
         BlockPos lowerPos = state.get(HALF) == DoubleBlockHalf.LOWER ? pos : pos.down();
         BlockState lowerBlockState = world.getBlockState(lowerPos);
-        DoubleBlockHalf doubleBlockHalf =  state.get(HALF);
+        DoubleBlockHalf doubleBlockHalf = state.get(HALF);
         BlockPos otherPos = doubleBlockHalf == DoubleBlockHalf.LOWER ? pos.up() : pos.down();
         BlockState otherBlockState = world.getBlockState(otherPos);
         InfinityDoorBlockEntity lowerBlockEntity = (InfinityDoorBlockEntity) world.getBlockEntity(lowerPos);
