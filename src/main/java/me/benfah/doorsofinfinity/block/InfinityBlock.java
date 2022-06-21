@@ -20,19 +20,11 @@ public class InfinityBlock extends Block {
     }
 
     public enum Color implements StringIdentifiable {
-        BLACK("black"),
-        WHITE("white");
-
-        String name;
-        Color(String name)
-        {
-            this.name = name;
-        }
-
+        BLACK, WHITE;
         @Override
         public String asString()
         {
-            return name;
+            return name().toLowerCase();
         }
     }
 }

@@ -7,7 +7,6 @@ import me.benfah.doorsofinfinity.utils.PortalCreationHelper;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.block.enums.DoorHinge;
 import net.minecraft.block.enums.DoubleBlockHalf;
 import net.minecraft.entity.Entity.RemovalReason;
 import net.minecraft.nbt.NbtCompound;

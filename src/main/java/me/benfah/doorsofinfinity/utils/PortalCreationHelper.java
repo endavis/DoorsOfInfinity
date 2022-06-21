@@ -31,10 +31,10 @@ public class PortalCreationHelper {
 		portal.transmitterWorld = transmitterWorld;
 		portal.glassArea = glassBox;
 
-		if(rot != null) portal.rotation = rot;
+		if (rot != null) portal.rotation = rot;
 		portal.setPos(pos.getX(), pos.getY(), pos.getZ());
 		world.spawnEntity(portal);
-		if(biWay) PortalManipulation.completeBiWayPortal(portal, Portal.entityType);
+		if (biWay) PortalManipulation.completeBiWayPortal(portal, Portal.entityType);
 		return portal;
 	}
 

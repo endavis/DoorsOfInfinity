@@ -8,9 +8,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
 public class DOFBlockEntities {
-	public static BlockEntityType<InfinityDoorBlockEntity> INFINITY_DOOR;
-	
-	public static void init() {
-		INFINITY_DOOR = Registry.register(Registry.BLOCK_ENTITY_TYPE, new Identifier(DOFMod.MOD_ID, "infinity_door"), FabricBlockEntityTypeBuilder.create(InfinityDoorBlockEntity::new, DOFBlocks.GENERATED_INFINITY_DOOR, DOFBlocks.INFINITY_DOOR).build(null));
-	}
+	public static BlockEntityType<InfinityDoorBlockEntity> INFINITY_DOOR  = Registry.register(Registry.BLOCK_ENTITY_TYPE, new Identifier(DOFMod.MOD_ID, "infinity_door"), FabricBlockEntityTypeBuilder.create(InfinityDoorBlockEntity::new, DOFBlocks.GENERATED_INFINITY_DOOR, DOFBlocks.INFINITY_DOOR).build(null));
+
+	public static void init() {}
 }

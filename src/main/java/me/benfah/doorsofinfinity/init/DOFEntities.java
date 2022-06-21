@@ -10,9 +10,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
 public class DOFEntities {
-    public static EntityType<PhotonPortal> BREAKABLE_PORTAL;
+    public static EntityType<PhotonPortal> BREAKABLE_PORTAL = Registry.register(Registry.ENTITY_TYPE, new Identifier(DOFMod.MOD_ID, "breakable_portal"), FabricEntityTypeBuilder.create(SpawnGroup.MISC, PhotonPortal::new).dimensions(EntityDimensions.fixed(1, 1)).fireImmune().build());
 
-    public static void init() {
-        BREAKABLE_PORTAL = Registry.register(Registry.ENTITY_TYPE, new Identifier(DOFMod.MOD_ID, "breakable_portal"), FabricEntityTypeBuilder.create(SpawnGroup.MISC, PhotonPortal::new).dimensions(EntityDimensions.fixed(1, 1)).fireImmune().build());
-    }
+    public static void init() {}
 }

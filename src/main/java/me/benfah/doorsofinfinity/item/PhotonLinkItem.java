@@ -10,7 +10,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
@@ -65,7 +64,7 @@ public class PhotonLinkItem extends Item {
     public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
         NbtCompound photonTag = stack.getSubNbt("PhotonLink");
         if(photonTag != null) {
-            tooltip.add(new TranslatableText("lore.doorsofinfinity.photo_link_size", photonTag.getInt("Width"), photonTag.getInt("Height")).formatted(Formatting.GRAY));
+            tooltip.add(Text.translatable("lore.doorsofinfinity.photo_link_size", photonTag.getInt("Width"), photonTag.getInt("Height")).formatted(Formatting.GRAY));
         }
         
         super.appendTooltip(stack, world, tooltip, context);

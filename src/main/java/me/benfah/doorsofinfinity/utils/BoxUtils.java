@@ -26,7 +26,7 @@ public class BoxUtils {
 
 	public static NbtCompound vecToNbt(Vec3i vec3i) {
 		NbtCompound tag = new NbtCompound();
-		
+
 		tag.putInt("PosX" , vec3i.getX());
 		tag.putInt("PosY" , vec3i.getY());
 		tag.putInt("PosZ" , vec3i.getZ());
@@ -116,7 +116,7 @@ public class BoxUtils {
 		}
 
 		public boolean equals(Object obj) {
-			if(obj instanceof PlaneInfo) {
+			if (obj instanceof PlaneInfo) {
 				PlaneInfo toCompare = (PlaneInfo) obj;
 				return toCompare.height == this.height && toCompare.width == this.width;
 			}

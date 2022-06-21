@@ -6,7 +6,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.TallBlockItem;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 import net.minecraft.world.World;
 
@@ -21,11 +20,11 @@ public class InfinityDoorItem extends TallBlockItem {
     @Override
     public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
         NbtCompound blockEntityTag = stack.getSubNbt("BlockEntityTag");
-        if(blockEntityTag != null && !blockEntityTag.isEmpty()) {
+        if (blockEntityTag != null && !blockEntityTag.isEmpty()) {
             int dimOffset;
             int upgrades;
 
-            if(blockEntityTag.contains("PersonalDimension")) {
+            if (blockEntityTag.contains("PersonalDimension")) {
                 NbtCompound personalDimTag = blockEntityTag.getCompound("PersonalDimension");
                 dimOffset = personalDimTag.getInt("DimensionId");
                 upgrades = personalDimTag.getInt("Upgrades");
@@ -34,8 +33,8 @@ public class InfinityDoorItem extends TallBlockItem {
                 upgrades = blockEntityTag.getInt("Upgrades");
             }
 
-            tooltip.add(new TranslatableText("lore.doorsofinfinity.dim_offset", dimOffset).formatted(Formatting.GRAY));
-            tooltip.add(new TranslatableText("text.doorsofinfinity.installed_upgrades", upgrades).formatted(Formatting.GRAY));
+            tooltip.add(Text.translatable("lore.doorsofinfinity.dim_offset", dimOffset).formatted(Formatting.GRAY));
+            tooltip.add(Text.translatable("text.doorsofinfinity.installed_upgrades", upgrades).formatted(Formatting.GRAY));
         }
         super.appendTooltip(stack, world, tooltip, context);
     }

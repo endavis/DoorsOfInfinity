@@ -28,7 +28,7 @@
   "depends": {
     "fabricloader": ">=0.12.12",
     "fabric": "*",
-    "minecraft": "1.18.x",
-    "imm_ptl_core": ">=1.2.5"
+    "minecraft": "1.19.x",
+    "imm_ptl_core": ">=2.0.0"
   }
 }

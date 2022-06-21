@@ -12,7 +12,7 @@ import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.DirectionProperty;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
@@ -48,7 +48,7 @@ public class PhotonTransmitterBlock extends GlassBlock {
                 tag.putInt("Direction", direction.getHorizontal());
                 tag.putString("WorldName", world.getRegistryKey().getValue().toString());
 
-                player.sendMessage(new TranslatableText("lore.doorsofinfinity.linked"), false);
+                player.sendMessage(Text.translatable("lore.doorsofinfinity.linked"), false);
 
                 return ActionResult.SUCCESS;
             }
