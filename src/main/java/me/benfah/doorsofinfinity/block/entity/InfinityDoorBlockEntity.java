@@ -87,11 +87,11 @@ public class InfinityDoorBlockEntity extends AbstractInfinityDoorBlockEntity<Inf
 	}
 
 	public BlockEntityUpdateS2CPacket toUpdatePacket() {
-		return BlockEntityUpdateS2CPacket.of(this);
+		return BlockEntityUpdateS2CPacket.create(this);
 	}
 
 	public NbtCompound toInitialChunkDataNbt() {
-		return this.toNbt();
+		return this.createNbt();
 	}
 
 	public void markDirty() {
